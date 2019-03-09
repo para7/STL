@@ -13,7 +13,9 @@ public:
 
     Undefault() = delete;
 
-    explicit Undefault(int _x) : x(_x) {}
+    explicit Undefault(int _x) : x(_x) { cout << "Undef:" << x << endl; }
+
+    ~Undefault() { cout << "~Undef:" << x << endl; }
 };
 
 class Uncopy
@@ -31,9 +33,13 @@ public:
         return *this;
     }
 
-    Uncopy() : x(-1) { cout << "default" << endl; };
+    Uncopy() : x(-1) { cout << "Uncopy:defalut" << endl; };
 
-    explicit Uncopy(int _x) : x(_x) {};
+    explicit Uncopy(int _x) : x(_x) { cout << "Uncopy:" << x << endl; };
+
+    ~Uncopy() {
+        cout << "~uncopy:" << x << "\n"; 
+    }
 
 private:
 };
@@ -48,12 +54,12 @@ int main()
     ar.push_back(Uncopy(20));
     ar.push_back(Uncopy(30));
     ar.push_back(Uncopy(40));
-    ar.push_back(Uncopy(50));
-    ar.push_back(Uncopy(60));
-    ar.push_back(Uncopy(70));
-    ar.push_back(Uncopy(80));
-    ar.push_back(Uncopy(90));
-    ar.push_back(Uncopy(100));
+    //ar.push_back(Uncopy(50));
+    //ar.push_back(Uncopy(60));
+    //ar.push_back(Uncopy(70));
+    //ar.push_back(Uncopy(80));
+    //ar.push_back(Uncopy(90));
+    //ar.push_back(Uncopy(100));
 
     cout << "size:" << ar.size() << endl;
     cout << "capacity:" << ar.capacity() << endl;
@@ -62,6 +68,8 @@ int main()
     {
         cout << ar[i].x << endl;
     }
+
+    cout << "\n\n";
 
     vector<Undefault> arud;
 

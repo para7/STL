@@ -29,7 +29,7 @@ namespace my
 
         ~vector()
         {
-            delete[] m_data;//deleteに[]をつけないと確か配列として開放されなくてメモリリークする
+            ReleaseMemory();//deleteに[]をつけないと確か配列として開放されなくてメモリリークする
         }
 
         T& operator[] (int32_t n) { return m_data[n]; }
@@ -69,13 +69,7 @@ namespace my
             //    newdata[i] = T();
             //}
 
-            if (m_capacity > 0)
-            {
-                //今まで使っていた領域を開放
-                ReleaseMemory();
-
-                free(m_data);
-            }
+            ReleaseMemory();
 
             //配列を差し替え
             m_data = newdata;
@@ -111,13 +105,7 @@ namespace my
                 newdata[i] = T();
             }
 
-            if (m_capacity > 0)
-            {
-                //今まで使っていた領域を開放
-                ReleaseMemory();
-
-                free(m_data);
-            }
+            ReleaseMemory();
 
             //配列を差し替え
             m_data = newdata;
@@ -167,6 +155,11 @@ namespace my
 
         void ReleaseMemory()
         {
+            if (m_capacity <= 0)
+            {
+                return;
+            }
+
             if (0 > m_size)
             {
                 return;
@@ -176,6 +169,10 @@ namespace my
             {
                 m_data[i].~T();
             }
+
+            free(m_data);
+
+            m_data = nullptr;
         }
     };
 }

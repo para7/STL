@@ -9,9 +9,9 @@ namespace my
 
         T* m_data;
 
-        int m_size;//実際に使っているサイズ
+        int32_t m_size;//実際に使っているサイズ
 
-        int m_capacity;//確保したメモリサイズ
+        int32_t m_capacity;//確保したメモリサイズ
         //配列サイズの変更にはコストが大きくかかるため余裕を持って確保する
 
     public:
@@ -20,7 +20,7 @@ namespace my
             , m_size(0)
             , m_capacity(0) {};
 
-        vector(int n) : m_data(nullptr)
+        vector(int32_t n) : m_data(nullptr)
             , m_size(0)
             , m_capacity(0)
         {
@@ -32,9 +32,9 @@ namespace my
             delete[] m_data;//deleteに[]をつけないと確か配列として開放されなくてメモリリークする
         }
 
-        T& operator[] (int n) { return m_data[n]; }
+        T& operator[] (int32_t n) { return m_data[n]; }
 
-        T& at(int n)
+        T& at(int32_t n)
         {
             if (n < m_size)
             {
@@ -44,7 +44,7 @@ namespace my
             return m_data[n];
         }
 
-        void reserve(int _capacity)
+        void reserve(const int32_t _capacity)
         {
             //既に確保されている領域の方が大きい場合
             if (_capacity < m_capacity)
@@ -53,9 +53,9 @@ namespace my
             }
 
             //新しい領域を確保
-            auto newdata = new T[_capacity];
+            T* newdata = (T*)malloc(sizeof(T) * _capacity);
 
-            const int nextsize = std::min(m_capacity, _capacity);
+            const int32_t nextsize = std::min(m_capacity, _capacity);
 
             //データを新領域にコピー
             for (size_t i = 0; i < m_size; ++i)
@@ -64,7 +64,7 @@ namespace my
             }
 
             //空のデータで埋める
-            //for (int i = m_size; i < _capacity; ++i)
+            //for (int32_t i = m_size; i < _capacity; ++i)
             //{
             //    newdata[i] = T();
             //}
@@ -72,7 +72,9 @@ namespace my
             if (m_capacity > 0)
             {
                 //今まで使っていた領域を開放
-                delete[] m_data;
+                ReleaseMemory();
+
+                free(m_data);
             }
 
             //配列を差し替え
@@ -85,7 +87,7 @@ namespace my
             //m_size = capacity;
         }
 
-        void resize(int _size)
+        void resize(const int32_t _size)
         {
             if (_size < 0)
             {
@@ -93,9 +95,9 @@ namespace my
             }
 
             //新しい領域を確保
-            auto newdata = new T[_size];
+            T* newdata = (T*)malloc(sizeof(T) * _size);
 
-            const int nextsize = std::min(m_capacity, _size);
+            const int32_t nextsize = std::min(m_capacity, _size);
 
             //データを新領域にコピー
             for (size_t i = 0; i < nextsize; ++i)
@@ -112,7 +114,9 @@ namespace my
             if (m_capacity > 0)
             {
                 //今まで使っていた領域を開放
-                delete[] m_data;
+                ReleaseMemory();
+
+                free(m_data);
             }
 
             //配列を差し替え
@@ -149,17 +153,29 @@ namespace my
             m_size++;
         }
 
-        int size()
+        int32_t size()
         {
             return m_size;
         }
 
-        int capacity()
+        int32_t capacity()
         {
             return m_capacity;
         }
 
     private:
 
+        void ReleaseMemory()
+        {
+            if (0 > m_size)
+            {
+                return;
+            }
+
+            for (int32_t i = 0; i < m_size; ++i)
+            {
+                m_data[i].~T();
+            }
+        }
     };
 }

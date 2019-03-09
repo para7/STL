@@ -31,7 +31,7 @@ public:
         return *this;
     }
 
-    Uncopy() : x(-1) {};
+    Uncopy() : x(-1) { cout << "default" << endl; };
 
     explicit Uncopy(int _x) : x(_x) {};
 
@@ -63,8 +63,7 @@ int main()
         cout << ar[i].x << endl;
     }
 
-    /*
-    Array<Undefault> arud;
+    vector<Undefault> arud;
 
     arud.push_back(Undefault(10));
     arud.push_back(Undefault(20));
@@ -79,5 +78,4 @@ int main()
     {
         cout << arud[i].x << endl;
     }
-    */
 }

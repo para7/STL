@@ -12,7 +12,7 @@ namespace my
     private:
 
         T* value;
-        int* cnt;
+        int32_t* cnt;
 
     public:
 
@@ -29,7 +29,7 @@ namespace my
             cout << "値ありコンストラクタ" << endl;
 
             value = _ptr;
-            cnt = new int(1);
+            cnt = new int32_t(1);
         }
 
         shared_ptr(const shared_ptr &obj)
@@ -38,7 +38,7 @@ namespace my
 
             if (value != nullptr)
             {
-                ReleasePointer();
+                ReleasePoint32_ter();
             }
 
             value = obj.value;
@@ -55,10 +55,10 @@ namespace my
         {
             cout << "デストラクタ" << endl;
 
-            ReleasePointer();
+            ReleasePoint32_ter();
         }
 
-        void Print()
+        void Print32_t()
         {
             if (value == nullptr)
             {
@@ -77,7 +77,7 @@ namespace my
         {
             if (value != nullptr)
             {
-                ReleasePointer();
+                ReleasePoint32_ter();
             }
 
             value = obj.value;
@@ -86,13 +86,13 @@ namespace my
         }
 
         //参照を手放す時に呼び出す
-        void ReleasePointer()
+        void ReleasePoint32_ter()
         {
-            cout << "ReleasePointer" << endl;
+            cout << "ReleasePoint32_ter" << endl;
 
             --*cnt;
 
-            Print();
+            Print32_t();
 
             if (*cnt == 0)
             {

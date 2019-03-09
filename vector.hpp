@@ -46,6 +46,8 @@ namespace my
 
         void reserve(const int32_t _capacity)
         {
+            std::cout << "reserve:" << _capacity << std::endl;
+
             //Šù‚ÉŠm•Û‚³‚ê‚Ä‚¢‚é—Ìˆæ‚Ì•û‚ª‘å‚«‚¢ê‡
             if (_capacity < m_capacity)
             {
@@ -83,6 +85,8 @@ namespace my
 
         void resize(const int32_t _size)
         {
+            std::cout << "resize:" << _size  << std::endl;
+
             if (_size < 0)
             {
                 return;
